@@ -1,1 +1,1 @@
-#PhysicalAI Practice Repo
+# Physicalai Practice Repo
