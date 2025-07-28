@@ -1,0 +1,34 @@
+mkdir -p ~/pai_ws/src
+cd ~/pai_ws/src && git clone https://github.com/matsuolab/physicalai_teleop.git
+cd ~/pai_ws && rosdep install --from-paths src --ignore-src -r -y 
+colcon build --symlink-install --packages-select physicalai_teleop 
+source install/setup.bash
+ros2 launch crane_plus_gazebo crane_plus_with_table.launch.py
+ros2 run physicalai_teleop teleop_keyboard 
+ros2 bag record -a -o ~/dataset/rosbags/liftup/ep0 
+ros2 bag record -a -o ~/dataset/rosbags/liftup/ep1
+ros2 bag record -a -o ~/dataset/rosbags/liftup/ep2
+ros2 bag record -a -o ~/dataset/rosbags/liftup/ep3
+ros2 bag record -a -o ~/dataset/rosbags/liftup/ep4
+ros2 bag record -a -o ~/dataset/rosbags/liftup/ep5
+ros2 bag record -a -o ~/dataset/rosbags/liftup/ep6
+ros2 bag record -a -o ~/dataset/rosbags/liftup/ep7
+ros2 bag record -a -o ~/dataset/rosbags/liftup/ep8
+ros2 bag record -a -o ~/dataset/rosbags/liftup/ep9
+ros2 bag record -a -o ~/dataset/rosbags/liftup/ep10
+ros2 bag record -a -o ~/dataset/rosbags/liftup/ep11
+ros2 bag record -a -o ~/dataset/rosbags/liftup/ep12
+ros2 bag record -a -o ~/dataset/rosbags/liftup/ep13
+ros2 bag record -a -o ~/dataset/rosbags/liftup/ep14
+ros2 bag record -a -o ~/dataset/rosbags/liftup/ep15
+ros2 bag record -a -o ~/dataset/rosbags/liftup/ep16
+ros2 bag record -a -o ~/dataset/rosbags/liftup/ep17
+ros2 bag record -a -o ~/dataset/rosbags/liftup/ep18
+ros2 bag record -a -o ~/dataset/rosbags/liftup/ep19
+ros2 bag record -a -o ~/dataset/rosbags/liftup/ep20
+cd ~/pai_training
+pixi run convert
+cd ~/pai_training
+pixi run wandb login
+pixi run train
+pixi run infer --model-path /home/ubuntu/checkpoints/train/crane_plus_liftup_act
